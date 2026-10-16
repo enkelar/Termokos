@@ -4,7 +4,7 @@ import { supabase } from './supabase'
 import PasswordInput from './PasswordInput'
 
 // Used for both "change password" (/account) and the page opened from the reset email (/reset).
-export default function Account({ reset }) {
+export default function Account({ reset, onDone }) {
   const nav = useNavigate()
   const [pw, setPw] = useState(''), [pw2, setPw2] = useState('')
   const [err, setErr] = useState(''), [ok, setOk] = useState(false)
@@ -15,7 +15,7 @@ export default function Account({ reset }) {
     if (pw !== pw2) return setErr('Fjalëkalimet nuk përputhen.')
     const { error } = await supabase.auth.updateUser({ password: pw })
     if (error) return setErr(error.message)
-    setOk(true); setTimeout(() => nav('/'), 1200)
+    setOk(true); setTimeout(() => (onDone ? onDone() : nav('/')), 1200)
   }
   return (
     <form className="login" onSubmit={submit}>

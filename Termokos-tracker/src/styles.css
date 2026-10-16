@@ -34,7 +34,7 @@ body {
     sans-serif;
 }
 .wrap {
-  max-width: 1250px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 16px;
 }
@@ -103,19 +103,20 @@ button.p {
   font-size: 15px;
 }
 .sc {
-  overflow-x: auto;
+  overflow: visible;
 }
 table {
   border-collapse: collapse;
   width: 100%;
-  font-size: 12px;
+  table-layout: fixed;
+  font-size: 11px;
 }
 th,
 td {
   border: 1px solid var(--line);
   padding: 0;
   text-align: center;
-  min-width: 26px;
+  min-width: 0;
 }
 th {
   background: var(--bg);
@@ -129,9 +130,10 @@ th small {
 }
 td.n {
   text-align: left;
-  padding: 3px 6px;
+  padding: 3px 4px;
   white-space: nowrap;
-  min-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 td.we,
 th.we {
@@ -139,20 +141,19 @@ th.we {
 }
 td input {
   width: 100%;
-  min-width: 26px;
+  min-width: 0;
   border: 0;
   background: transparent;
   text-align: center;
   padding: 4px 0;
   -moz-appearance: textfield;
-  appearance: textfield;
 }
 td input::-webkit-inner-spin-button {
   display: none;
 }
 td.t {
   font-weight: 600;
-  padding: 3px 8px;
+  padding: 3px 2px;
 }
 .x {
   border: 0;
@@ -264,5 +265,71 @@ td.t {
     background: #d4ecd5 !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+  }
+}
+
+th.v {
+  height: 130px;
+  vertical-align: bottom;
+  padding: 4px 2px;
+}
+th.v span {
+  display: block;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  margin: 0 auto;
+}
+th.v small {
+  display: inline;
+  color: var(--mut);
+}
+td.x2 input {
+  min-width: 0;
+}
+tfoot td {
+  border: 0;
+  font-weight: 600;
+  padding: 3px 2px;
+}
+@media print {
+  table {
+    font-size: 8px;
+  }
+  td input {
+    font-size: 8px;
+  }
+  .sc {
+    overflow: visible;
+  }
+  th,
+  td {
+    min-width: 0;
+  }
+}
+
+/* Fit the whole sheet on screen: fixed columns for labels/totals, day columns share the rest */
+th:nth-child(1) {
+  width: 26px;
+}
+th:nth-child(2) {
+  width: 84px;
+}
+th.v {
+  width: 34px;
+}
+th.np {
+  width: 24px;
+}
+@media (max-width: 900px) {
+  .sc {
+    overflow-x: auto;
+  }
+  table {
+    table-layout: auto;
+    min-width: 1000px;
+  }
+  td input {
+    min-width: 24px;
   }
 }

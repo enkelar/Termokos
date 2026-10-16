@@ -12,12 +12,13 @@ export default function Viewer() {
   if (d === undefined) return <p className="wrap">Duke ngarkuar…</p>
   if (!d) return <p className="wrap">Ky link nuk është i vlefshëm.</p>
   const hours = Object.fromEntries(d.entries.map((e) => [`${e.worker_id}:${e.day}`, e.hours]))
+  const extras = Object.fromEntries((d.extras || []).map((x) => [`${x.worker_id}:${x.field}`, x.value]))
   return (
     <div className="wrap">
       <div className="note np">Po shikoni këtë raport vetëm për lexim.</div>
       <div className="sheet">
         <Head team={d.team} department={d.department} year={d.year} month={d.month - 1} MONTHS={MONTHS} />
-        <Grid year={d.year} month={d.month - 1} workers={d.workers} hours={hours} editable={false} />
+        <Grid year={d.year} month={d.month - 1} workers={d.workers} hours={hours} extras={extras} editable={false} />
         <div className="sign">
           {[['Përgatitur nga', d.prepared_by], ['Kontrolloi', d.checked_by], ['Aprovoi', d.approved_by]].map(([l, v]) => (
             <div key={l}><label>{l}</label><div className="line">{v || '\u00a0'}</div></div>
