@@ -220,6 +220,25 @@ td.t {
   color: #b3261e;
   margin: 0;
 }
+.pw {
+  position: relative;
+}
+.login .pw input {
+  width: 100%;
+  padding-right: 40px;
+}
+.eye {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: none;
+  padding: 6px;
+  color: var(--mut);
+  display: flex;
+  cursor: pointer;
+}
 @media print {
   @page {
     size: A4 landscape;

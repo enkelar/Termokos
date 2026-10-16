@@ -12,6 +12,7 @@ export default function Sheet() {
   const [workers, setWorkers] = useState([]), [hours, setHours] = useState({})
   const [name, setName] = useState(''), [msg, setMsg] = useState('')
   const locked = rep?.status === 'closed'
+  const [preview, setPreview] = useState(false)
 
   const load = useCallback(async () => {
     const { data: t } = await supabase.from('teams').select('*').maybeSingle()
@@ -50,8 +51,8 @@ export default function Sheet() {
     const rows = [], next = { ...hours }
     workers.forEach((w) => {
       for (let d = 1; d <= daysIn(year, month); d++) {
-        const k = `${w.id}:${d}`, wd = new Date(year, month, d).getDay()
-        if (wd % 6 && (next[k] === undefined || next[k] === '')) { next[k] = 8; rows.push({ report_id: rep.id, worker_id: w.id, day: d, hours: 8 }) }
+        const k = `${w.id}:${d}`, wd = new Date(year, month, d).getDay(), v = wd % 6 ? 8 : 0 // weekdays 8, weekends 0
+        if (next[k] === undefined || next[k] === '') { next[k] = v; rows.push({ report_id: rep.id, worker_id: w.id, day: d, hours: v }) }
       }
     })
     if (rows.length) await supabase.from('entries').upsert(rows, { onConflict: 'report_id,worker_id,day' })
@@ -85,28 +86,29 @@ export default function Sheet() {
         <button onClick={() => nav('/')}>Sot</button>
         <button onClick={() => go(1)} aria-label="Muaji tjetër">›</button>
         <button onClick={share}>Kopjo linkun (vetëm shikim)</button>
+        <button onClick={() => setPreview(!preview)}>{preview ? 'Ndrysho' : 'Shiko'}</button>
         <button className="p" onClick={() => window.print()}>Ruaj si PDF</button>
         {msg && <span>{msg}</span>}
       </div>
       {locked && <div className="note np">Ky muaj është mbyllur. Rihapeni për ta ndryshuar.</div>}
       <div className="sheet">
         <Head team={team.name} department={team.department} year={year} month={month} MONTHS={MONTHS} />
-        <Grid year={year} month={month} workers={workers} hours={hours} editable={!locked}
+        <Grid year={year} month={month} workers={workers} hours={hours} editable={!locked && !preview}
           onChange={(k, v) => setHours((h) => ({ ...h, [k]: v }))} onCommit={commit} onRemove={removeWorker} />
         <div className="sign">
           {[['prepared_by', 'Përgatitur nga'], ['checked_by', 'Kontrolloi'], ['approved_by', 'Aprovoi']].map(([f, l]) => (
             <div key={f}><label>{l}</label>
-              <input value={rep[f] ?? ''} readOnly={locked}
+              <input value={rep[f] ?? ''} readOnly={locked || preview}
                 onChange={(e) => setRep({ ...rep, [f]: e.target.value })} onBlur={(e) => saveSign(f, e.target.value)} />
             </div>
           ))}
         </div>
       </div>
       <div className="add np">
-        {!locked ? <>
+        {preview ? null : !locked ? <>
           <input className="nm" value={name} onChange={(e) => setName(e.target.value)} placeholder="Inicialet, p.sh. A. B." maxLength={20} />
           <button onClick={addWorker}>Shto punëtor</button>
-          <button onClick={fill}>Plotëso 8 orë në ditët e punës</button>
+          <button onClick={fill}>Plotëso (8 orë, fundjava 0)</button>
           <button className="p" onClick={close}>Mbyll muajin</button>
         </> : <button onClick={reopen}>Rihap muajin</button>}
       </div>
