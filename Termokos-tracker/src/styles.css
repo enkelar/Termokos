@@ -131,10 +131,17 @@ th small {
 td.n {
   text-align: left;
   padding: 3px 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  line-height: 1.25;
+  cursor: pointer;
 }
+td.n:focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: -2px;
+}
+
 td.we,
 th.we {
   background: var(--we);
@@ -147,7 +154,12 @@ td input {
   text-align: center;
   padding: 4px 0;
   -moz-appearance: textfield;
+  appearance: textfield;
 }
+td input:focus {
+  background: var(--warn);
+}
+
 td input::-webkit-inner-spin-button {
   display: none;
 }
@@ -308,12 +320,23 @@ tfoot td {
   }
 }
 
+tr.sel td:not(.we) {
+  background: var(--warn);
+}
+.rowbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
 /* Fit the whole sheet on screen: fixed columns for labels/totals, day columns share the rest */
 th:nth-child(1) {
   width: 26px;
 }
 th:nth-child(2) {
-  width: 84px;
+  width: 130px;
 }
 th.v {
   width: 34px;
@@ -321,6 +344,7 @@ th.v {
 th.np {
   width: 24px;
 }
+
 @media (max-width: 900px) {
   .sc {
     overflow-x: auto;
@@ -332,4 +356,29 @@ th.np {
   td input {
     min-width: 24px;
   }
+}
+
+.num-header {
+  min-width: 26px;
+  vertical-align: bottom;
+}
+
+.day-header {
+  min-width: 34px;
+  vertical-align: bottom;
+}
+
+.vertical-text {
+  writing-mode: sideways-lr;
+  white-space: nowrap;
+  margin: 0 auto;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.day-header small {
+  display: block;
+  margin-top: 4px;
+  font-size: 9px;
+  font-weight: 500;
 }
