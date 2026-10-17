@@ -19,9 +19,11 @@ export default function Viewer() {
       <div className="sheet">
         <Head team={d.team} department={d.department} year={d.year} month={d.month - 1} MONTHS={MONTHS} />
         <Grid year={d.year} month={d.month - 1} workers={d.workers} hours={hours} extras={extras} editable={false} />
+        <div className="legend"><b>Sqarim:</b> PV - Pushim vjetor, PM - Pushim mjekësor, PP - Pushim pa pagesë, F - Festë, E - Ekskursion, T - Trajnim,</div>
         <div className="sign">
-          {[['Përgatitur nga', d.prepared_by], ['Kontrolloi', d.checked_by], ['Aprovoi', d.approved_by]].map(([l, v]) => (
-            <div key={l}><label>{l}</label><div className="line">{v || '\u00a0'}</div></div>
+          <div><label>Datë:</label><div className="val">{d.report_date || '\u00a0'}</div></div>
+          {[['Përgatitur nga:', d.prepared_by], ['Kontrolloi:', d.checked_by], ['Aprovoi:', d.approved_by]].map(([l, v]) => (
+            <div key={l}><label>{l}</label><div className="val">{v || '\u00a0'}</div><div className="sigline" /></div>
           ))}
         </div>
       </div>

@@ -382,3 +382,38 @@ th.np {
   font-size: 9px;
   font-weight: 500;
 }
+
+.legend {
+  margin-top: 12px;
+  font-size: 12px;
+}
+.sign {
+  grid-template-columns: 140px repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 14px;
+}
+.sign input,
+.sign textarea,
+.sign .val {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 2px 0;
+  font: inherit;
+  resize: none;
+  overflow: hidden;
+  color: inherit;
+}
+.sign .val {
+  min-height: 2.8em;
+}
+.sigline {
+  border-bottom: 1px solid var(--fg);
+  margin-top: 28px;
+}
+@media (max-width: 700px) {
+  .sign {
+    grid-template-columns: 1fr 1fr;
+  }
+}
