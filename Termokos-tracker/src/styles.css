@@ -417,3 +417,37 @@ th.np {
     grid-template-columns: 1fr 1fr;
   }
 }
+:root {
+  --hol: #99cad7;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --hol: #1f3d66;
+  }
+}
+td.hol,
+th.hol {
+  background: var(--hol);
+}
+tr.sel td.hol {
+  background: var(--hol);
+}
+td.colsel:not(.hol),
+th.colsel:not(.hol) {
+  background: var(--warn);
+}
+th.colsel {
+  outline: 2px solid var(--acc);
+  outline-offset: -2px;
+}
+th.day-header {
+  cursor: pointer;
+}
+@media print {
+  td.hol,
+  th.hol {
+    background: #c4dcff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

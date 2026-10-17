@@ -18,7 +18,7 @@ export default function Viewer() {
       <div className="note np">Po shikoni këtë raport vetëm për lexim.</div>
       <div className="sheet">
         <Head team={d.team} department={d.department} year={d.year} month={d.month - 1} MONTHS={MONTHS} />
-        <Grid year={d.year} month={d.month - 1} workers={d.workers} hours={hours} extras={extras} editable={false} />
+        <Grid year={d.year} month={d.month - 1} workers={d.workers} hours={hours} extras={extras} holidays={d.holidays || []} editable={false} />
         <div className="legend"><b>Sqarim:</b> PV - Pushim vjetor, PM - Pushim mjekësor, PP - Pushim pa pagesë, F - Festë, E - Ekskursion, T - Trajnim,</div>
         <div className="sign">
           <div><label>Datë:</label><div className="val">{d.report_date || '\u00a0'}</div></div>

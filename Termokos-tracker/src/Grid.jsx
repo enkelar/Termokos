@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { WD, EXTRAS, BONUS, daysIn, tri } from "./lib";
 
 export function Head({ team, department, year, month, MONTHS }) {
@@ -30,8 +30,12 @@ export default function Grid({
   onExtraCommit,
   onRemove,
   onClearRow,
+  holidays = [],
+  onToggleHoliday,
 }) {
   const [sel, setSel] = useState(null);
+  const [selCol, setSelCol] = useState(null);
+  useEffect(() => setSelCol(null), [year, month]);
   const days = Array.from({ length: daysIn(year, month) }, (_, i) => i + 1);
   const dow = (d) => new Date(year, month, d).getDay();
   const we = (d) => dow(d) === 0 || dow(d) === 6;
@@ -40,6 +44,9 @@ export default function Grid({
   const extraSum = (f) =>
     workers.reduce((s, w) => s + (Number(extras[`${w.id}:${f}`]) || 0), 0);
   const selW = workers.find((w) => w.id === sel);
+  const hol = (d) => holidays.includes(d);
+  // column classes: weekend, holiday, selected
+  const cls = (d) => [we(d) && "we", hol(d) && "hol", selCol === d && "colsel"].filter(Boolean).join(" ");
 
   // Arrow-key movement between cells (r = row, c = column among editable cells)
   const onKey = (e) => {
@@ -122,7 +129,19 @@ export default function Grid({
                 const fullDate = `${String(d).padStart(2, "0")}/${String(month + 1).padStart(2, "0")}/${year}`;
 
                 return (
-                  <th key={d} className={we(d) ? "we day-header" : "day-header"}>
+                  <th
+                    key={d}
+                    className={`day-header ${cls(d)}`}
+                    tabIndex={editable ? 0 : undefined}
+                    onClick={() => editable && setSelCol(selCol === d ? null : d)}
+                    onKeyDown={(e) => {
+                      if (editable && (e.key === "Enter" || e.key === " ")) {
+                        e.preventDefault();
+                        setSelCol(selCol === d ? null : d);
+                      }
+                    }}
+                    title={editable ? "Kliko për të zgjedhur ditën" : undefined}
+                  >
                     <div className="vertical-text">{fullDate}</div>
                   </th>
                 );
@@ -165,7 +184,7 @@ export default function Grid({
                   {days.map((d) => {
                     const k = `${w.id}:${d}`;
                     return (
-                      <td key={d} className={we(d) ? "we" : ""}>
+                      <td key={d} className={cls(d)}>
                         {editable ? (
                           <input
                             type="number"
@@ -236,6 +255,18 @@ export default function Grid({
           </span>
           <button onClick={() => onClearRow(selW)}>Pastro kutitë e rreshtit</button>
           <button onClick={() => setSel(null)}>Hiq zgjedhjen</button>
+        </div>
+      )}
+      {editable && selCol && (
+        <div className="rowbar np">
+          <span>
+            Dita e zgjedhur:{" "}
+            <b>{`${String(selCol).padStart(2, "0")}/${String(month + 1).padStart(2, "0")}/${year}`}</b>
+          </span>
+          <button onClick={() => onToggleHoliday(selCol)}>
+            {hol(selCol) ? "Hiq festën" : "Shëno si festë"}
+          </button>
+          <button onClick={() => setSelCol(null)}>Hiq zgjedhjen</button>
         </div>
       )}
     </div>
