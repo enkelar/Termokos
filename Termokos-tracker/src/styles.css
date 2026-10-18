@@ -252,33 +252,6 @@ td.t {
   display: flex;
   cursor: pointer;
 }
-@media print {
-  @page {
-    size: A4 landscape;
-    margin: 10mm;
-  }
-  body {
-    background: #fff;
-    color: #000;
-  }
-  .np {
-    display: none !important;
-  }
-  .wrap {
-    padding: 0;
-    max-width: none;
-  }
-  .sheet {
-    border: 0;
-    padding: 0;
-  }
-  td.we,
-  th.we {
-    background: #d4ecd5 !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-}
 
 th.v {
   height: 130px;
@@ -303,21 +276,6 @@ tfoot td {
   border: 0;
   font-weight: 600;
   padding: 3px 2px;
-}
-@media print {
-  table {
-    font-size: 8px;
-  }
-  td input {
-    font-size: 8px;
-  }
-  .sc {
-    overflow: visible;
-  }
-  th,
-  td {
-    min-width: 0;
-  }
 }
 
 tr.sel td:not(.we) {
@@ -443,11 +401,106 @@ th.colsel {
 th.day-header {
   cursor: pointer;
 }
+
 @media print {
+  @page {
+    size: A4 landscape;
+    margin: 8mm;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .np,
+  .bar,
+  .rowbar,
+  .add,
+  .note,
+  .hist {
+    display: none !important;
+  }
+  .wrap {
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .sheet {
+    border: 0 !important;
+    padding: 0 !important;
+  }
+  .sc {
+    overflow: visible !important;
+  }
+
+  table {
+    width: 100% !important;
+    min-width: 0 !important;
+    table-layout: fixed !important;
+    font-size: 8px !important;
+  }
+  th,
+  td {
+    min-width: 0 !important;
+  }
+  th:nth-child(1) {
+    width: 2.4% !important;
+  }
+  th:nth-child(2) {
+    width: 9% !important;
+  }
+  th.v {
+    width: 2.7% !important;
+    height: 110px !important;
+  }
+  th.day-header {
+    width: 1.95% !important;
+    height: 70px;
+  }
+  thead {
+    display: table-header-group;
+  }
+  tr {
+    break-inside: avoid;
+  }
+
+  .vertical-text {
+    writing-mode: vertical-rl !important;
+    transform: rotate(180deg);
+    font-size: 7px !important;
+  }
+  td input {
+    font-size: 8px !important;
+    padding: 1px 0 !important;
+    height: auto !important;
+  }
+  td.n {
+    font-size: 8px !important;
+    padding: 1px 3px !important;
+  }
+  td.t {
+    padding: 1px !important;
+  }
+
+  td.we,
+  th.we {
+    background: #d4ecd5 !important;
+  }
   td.hol,
   th.hol {
     background: #c4dcff !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+  }
+  tr.sel td:not(.we):not(.hol),
+  td.colsel:not(.we):not(.hol) {
+    background: transparent !important;
+  }
+
+  .legend,
+  .sign {
+    break-inside: avoid;
   }
 }
